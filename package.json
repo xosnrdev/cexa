@@ -1,0 +1,32 @@
+{
+  "name": "cexa",
+  "version": "1.0.0",
+  "description": "A code execution api engine that executes and run arbitrary code isolatedly.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xosnrdev/cexa.git"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=10.0.0",
+    "yarn": "please-use-npm"
+  },
+  "keywords": [
+    "cexa",
+    "code",
+    "execution",
+    "api",
+    "engine",
+    "docker",
+    "docker-compose",
+    "containerd",
+    "nerdctl",
+    "security"
+  ],
+  "author": "Success Kingsley",
+  "license": "MIT"
+}
