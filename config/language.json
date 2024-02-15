@@ -1,0 +1,17 @@
+{
+  "javascript": {
+    "imageTag": "javascript:latest",
+    "command": "node $FILE",
+    "extension": "js"
+  },
+  "typescript": {
+    "imageTag": "typescript:latest",
+    "command": "ts-node $FILE",
+    "extension": "ts"
+  },
+  "python": {
+    "imageTag": "python:latest",
+    "command": "python $FILE",
+    "extension": "py"
+  }
+}

@@ -1,0 +1,6 @@
+.env
+node_modules
+.trunk
+combined.log
+coverage
+.vscode
