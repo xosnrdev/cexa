@@ -12,7 +12,7 @@ interface ExecuteCodePayload {
 
 /**
  * Executes the provided code based on the specified language.
- * 
+ *
  * @param req - The Express request object.
  * @param res - The Express response object.
  * @param next - The Express next function.
@@ -23,7 +23,7 @@ interface ExecuteCodePayload {
 async function executeCodeController(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   try {
     const isSupportedLanguage = Object.keys(languageConfig);

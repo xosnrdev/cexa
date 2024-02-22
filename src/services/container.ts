@@ -25,6 +25,14 @@ interface LanguageExecutor {
   executeCode(language: string, code: string): Promise<string>;
 }
 
+/**
+ * Executes the provided code based on the specified language.
+ * @param language - The language in which the code is written.
+ * @param code - The code to be executed.
+ * @returns A Promise that resolves to the output of the executed code.
+ * @throws {BadRequestError} If the language is not supported.
+ * @throws {Error} If an error occurs during code execution.
+ */
 class CommandExecutor implements LanguageExecutor {
   private exec = promisify(execCb);
   private writeFile = promisify(fs.writeFile);
@@ -47,7 +55,7 @@ class CommandExecutor implements LanguageExecutor {
   }
 
   private async getLanguageProperties(
-    language: string
+    language: string,
   ): Promise<LanguageProperties> {
     const languages: Languages = languageConfig;
     const languageProperties = languages[language];
@@ -61,11 +69,11 @@ class CommandExecutor implements LanguageExecutor {
 
   private async writeCodeToFile(
     languageProperties: LanguageProperties,
-    code: string
+    code: string,
   ): Promise<string> {
     const filename = path.join(
       os.homedir(),
-      `index.${languageProperties.extension}`
+      `index.${languageProperties.extension}`,
     );
     await this.writeFile(filename, code);
     return filename;
@@ -73,7 +81,7 @@ class CommandExecutor implements LanguageExecutor {
 
   private async executeCommand(
     languageProperties: LanguageProperties,
-    filename: string
+    filename: string,
   ): Promise<string> {
     await this.loadImage(languageProperties);
 
@@ -84,7 +92,7 @@ class CommandExecutor implements LanguageExecutor {
     try {
       const { stdout, stderr } = await this.executeWithTimeout(
         runCommand,
-        5000
+        5000,
       );
 
       if (stderr) {
@@ -94,13 +102,13 @@ class CommandExecutor implements LanguageExecutor {
       return stdout;
     } catch (error) {
       throw new Error(
-        (error as Error).message.replace(/Command failed: .*/, "")
+        (error as Error).message.replace(/Command failed: .*/, ""),
       );
     }
   }
 
   private async loadImage(
-    languageProperties: LanguageProperties
+    languageProperties: LanguageProperties,
   ): Promise<void> {
     if (!this.isPulledImage[languageProperties.imageTag]) {
       const pullImageCommand = `docker pull ${languageProperties.imageTag}`;
@@ -109,7 +117,7 @@ class CommandExecutor implements LanguageExecutor {
         this.isPulledImage[languageProperties.imageTag] = true;
       } catch (error) {
         throw new Error(
-          `Failed to pull Docker image: ${(error as Error).message}`
+          `Failed to pull Docker image: ${(error as Error).message}`,
         );
       }
     }
@@ -117,7 +125,7 @@ class CommandExecutor implements LanguageExecutor {
 
   private async executeWithTimeout(
     command: string,
-    timeout: number
+    timeout: number,
   ): Promise<{ stdout: string; stderr: string }> {
     if (!command) {
       throw new Error("Command must not be empty");
