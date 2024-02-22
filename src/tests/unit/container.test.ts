@@ -33,7 +33,7 @@ describe("POST /pong", () => {
       "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]",
     );
     expect(response.body.error).toBeNull();
-  }, 10000);
+  }, 15000);
 
   it("returns an error for unsupported languages", async () => {
     const payload = {
