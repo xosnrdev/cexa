@@ -12,7 +12,7 @@ describe("POST /pong", () => {
   afterAll((done) => {
     server.close(done);
   });
-  
+
   const endpoint: string = "/pong";
 
   it("executes code and returns the result", async () => {
