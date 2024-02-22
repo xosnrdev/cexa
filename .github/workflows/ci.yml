@@ -51,9 +51,6 @@ jobs:
           version: "latest"
           token: ${{env.DIGITALOCEAN_API_TOKEN}}
 
-      - name: registry login
-        run: doctl registry login --read-only
-
       - name: Run development tests
         run: npm run test
 
