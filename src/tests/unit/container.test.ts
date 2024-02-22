@@ -2,7 +2,7 @@ import { Server } from "http";
 import request from "supertest";
 import WorkerProcess from "../../app";
 
-describe("POST /api/v1/execute", () => {
+describe("POST /pong", () => {
   let server: Server;
 
   beforeAll(() => {
@@ -13,6 +13,8 @@ describe("POST /api/v1/execute", () => {
     server.close(done);
   });
 
+  const endpoint: string = "pong";
+
   it("executes code and returns the result", async () => {
     const payload = {
       language: "python",
@@ -20,7 +22,7 @@ describe("POST /api/v1/execute", () => {
     };
 
     const response = await request(server)
-      .post("/api/v1/execute")
+      .post(endpoint)
       .send(payload)
       .expect("Content-Type", /json/)
       .expect(200);
@@ -28,7 +30,7 @@ describe("POST /api/v1/execute", () => {
     expect(response.body.success).toBe(true);
     expect(response.body.payload).toHaveProperty("stdout");
     expect(response.body.payload.stdout).toContain(
-      "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]"
+      "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]",
     );
     expect(response.body.error).toBeNull();
   });
@@ -40,7 +42,7 @@ describe("POST /api/v1/execute", () => {
     };
 
     const response = await request(server)
-      .post("/api/v1/execute")
+      .post(endpoint)
       .send(payload)
       .expect("Content-Type", /json/)
       .expect(400);
@@ -57,7 +59,7 @@ describe("POST /api/v1/execute", () => {
     };
 
     const response = await request(server)
-      .post("/api/v1/execute")
+      .post(endpoint)
       .send(payload)
       .expect("Content-Type", /json/)
       .expect(400);
@@ -69,7 +71,7 @@ describe("POST /api/v1/execute", () => {
 
   it("returns an error for empty payload", async () => {
     const response = await request(server)
-      .post("/api/v1/execute")
+      .post(endpoint)
       .send({})
       .expect("Content-Type", /json/)
       .expect(400);
@@ -83,7 +85,7 @@ describe("POST /api/v1/execute", () => {
     const payload = { language: "python" };
 
     const response = await request(server)
-      .post("/api/v1/execute")
+      .post(endpoint)
       .send(payload)
       .expect("Content-Type", /json/)
       .expect(400);
@@ -100,7 +102,7 @@ describe("POST /api/v1/execute", () => {
     };
 
     const response = await request(server)
-      .post("/api/v1/execute")
+      .post(endpoint)
       .send(payload)
       .expect("Content-Type", /json/)
       .expect(200);
@@ -115,7 +117,7 @@ describe("POST /api/v1/execute", () => {
     const payload = { code: "console.log('Hello, World!');" };
 
     const response = await request(server)
-      .post("/api/v1/execute")
+      .post(endpoint)
       .send(payload)
       .expect("Content-Type", /json/)
       .expect(400);
@@ -132,7 +134,7 @@ describe("POST /api/v1/execute", () => {
     };
 
     const response = await request(server)
-      .post("/api/v1/execute")
+      .post(endpoint)
       .send(payload)
       .expect("Content-Type", /json/)
       .expect(400);
