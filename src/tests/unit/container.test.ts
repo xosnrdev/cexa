@@ -12,6 +12,8 @@ describe("POST /pong", () => {
   afterAll((done) => {
     server.close(done);
   });
+  
+  const endpoint: string = "/pong";
 
   const endpoint: string = "/pong";
 
