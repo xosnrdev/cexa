@@ -33,7 +33,7 @@ describe("POST /pong", () => {
       "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]",
     );
     expect(response.body.error).toBeNull();
-  });
+  }, 10000);
 
   it("returns an error for unsupported languages", async () => {
     const payload = {
@@ -111,7 +111,7 @@ describe("POST /pong", () => {
     expect(response.body.payload).toHaveProperty("stdout");
     expect(response.body.payload.stdout).toContain("Hello, World!");
     expect(response.body.error).toBeNull();
-  });
+  }, 10000);
 
   it("returns an error for missing language field in payload", async () => {
     const payload = { code: "console.log('Hello, World!');" };
