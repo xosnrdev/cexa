@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - development
+  workflow_dispatch:
 
 permissions:
   actions: read
@@ -49,9 +50,6 @@ jobs:
         with:
           version: "latest"
           token: ${{env.DIGITALOCEAN_API_TOKEN}}
-
-      - name: Authenticate with DigitalOcean
-        run: doctl auth init -t ${{env.DIGITALOCEAN_API_TOKEN}}
 
       - name: Run development tests
         run: npm run test
