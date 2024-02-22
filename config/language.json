@@ -1,0 +1,17 @@
+{
+  "javascript": {
+    "imageTag": "registry.digitalocean.com/cexa/javascript:latest",
+    "command": "node $FILE",
+    "extension": "js"
+  },
+  "typescript": {
+    "imageTag": "registry.digitalocean.com/cexa/typescript:latest",
+    "command": "./node_modules/.bin/ts-node $FILE",
+    "extension": "ts"
+  },
+  "python": {
+    "imageTag": "registry.digitalocean.com/cexa/python:latest",
+    "command": "python $FILE",
+    "extension": "py"
+  }
+}
