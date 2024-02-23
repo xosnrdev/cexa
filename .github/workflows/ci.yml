@@ -58,10 +58,6 @@ jobs:
         run: |
           git checkout -b ${{ env.PR_BRANCH }}
 
-      - name: Pull latest changes
-        run: |
-          git pull origin ${{ env.PR_BRANCH }}
-
       - name: Create Changelog
         uses: TriPSs/conventional-changelog-action@dd734f74fce61a6e02f821ee1b5930bc79a23534 # v5
         id: changelog
