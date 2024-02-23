@@ -8,6 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: write
   contents: write
   packages: write
   pull-requests: write
@@ -117,7 +118,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Create Release
+      - name: Create release
         uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v1
         with:
           token: ${{ env.TOKEN_GITHUB }}
