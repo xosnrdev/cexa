@@ -20,7 +20,7 @@ runs:
           ${{ runner.os }}-npm-
 
     - name: Install dependencies
-      shell: /bin/bash
+      shell: bash -euxo pipefail {0}
       run: npm ci
 
     - name: Set up doctl
@@ -30,11 +30,11 @@ runs:
         token: ${{env.DIGITALOCEAN_API_TOKEN}}
 
     - name: Registry login
-      shell: /bin/bash
+      shell: bash -euxo pipefail {0}
       run: doctl registry login --read-only --expiry-seconds 30
 
     - name: Run development tests
-      shell: /bin/bash
+      shell: bash -euxo pipefail {0}
       run: npm run test:ci
 
     - name: Send coverage results to Codecov

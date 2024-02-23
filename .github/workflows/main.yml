@@ -37,7 +37,7 @@ jobs:
 
       - name: Run tests
         uses: ./.github/actions/run_tests
-        with:
+        env:
           DIGITALOCEAN_API_TOKEN: ${{ env.DIGITALOCEAN_API_TOKEN }}
           CODECOV_TOKEN: ${{ env.CODECOV_TOKEN }}
 
@@ -52,7 +52,7 @@ jobs:
 
       - name: Release
         uses: ./.github/actions/release
-        with:
+        env:
           TOKEN_GITHUB: ${{ env.TOKEN_GITHUB }}
           DOCKERHUB_USERNAME: ${{ env.DOCKERHUB_USERNAME }}
           DOCKERHUB_PASSWORD: ${{ env.DOCKERHUB_PASSWORD }}
