@@ -1,6 +1,6 @@
 # <p align="center">CEXA: Code Execution API</p>
 
-[![CI](https://github.com/xosnrdev/cexa/actions/workflows/main.yml/badge.svg?event=pull_request)](https://github.com/xosnrdev/cexa/actions/workflows/main.yml)
+[![CI](https://github.com/xosnrdev/cexa/actions/workflows/ci.yml/badge.svg?event=pull_request)](https://github.com/xosnrdev/cexa/actions/workflows/ci.yml)
 
 CEXA is a powerful API designed to execute arbitrary code snippets in various programming languages within isolated docker environments. It prioritizes security, scalability, and user-friendliness.
 

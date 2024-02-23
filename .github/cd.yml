@@ -1,0 +1,37 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - master
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+  packages: read
+  
+env:
+  TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+  CEXA_ENV_VALUE: ${{ secrets.CEXA_ENV_VALUE }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Release
+        uses: ./.github/actions/release
+        env:
+          TOKEN_GITHUB: ${{ env.TOKEN_GITHUB }}
+          DOCKERHUB_USERNAME: ${{ env.DOCKERHUB_USERNAME }}
+          DOCKERHUB_PASSWORD: ${{ env.DOCKERHUB_PASSWORD }}
+          CEXA_ENV_VALUE: ${{ env.CEXA_ENV_VALUE }}
