@@ -20,8 +20,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # if workflow run CI is of type completed and theres no conflicts or workflow abnormallies
-    if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_commit.id == github.sha
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
