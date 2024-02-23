@@ -18,6 +18,7 @@ runs:
           ${{ runner.os }}-npm-
 
     - name: Install dependencies
+      shell: /bin/bash
       run: npm ci
 
     - name: Bump version and generate changelog
@@ -27,6 +28,7 @@ runs:
         token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Commit changes
+      shell: /bin/bash
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
@@ -39,13 +41,17 @@ runs:
         branch: ${{ github.ref }}
 
     - name: Build Docker image
+      shell: /bin/bash
       run: docker build -t ${{env.DOCKERHUB_USERNAME}}/cexa:${{ steps.package.outputs.version }} .
 
     - name: Log in to DockerHub
+      shell: /bin/bash
       run: echo "${{ env.DOCKERHUB_PASSWORD }}" | docker login -u ${{ env.DOCKERHUB_USERNAME }} --password-stdin
 
     - name: Push Docker image
+      shell: /bin/bash
       run: docker push ${{env.DOCKERHUB_USERNAME}}/cexa:${{ steps.package.outputs.version }}
 
     - name: Create Docker secret
+      shell: /bin/bash
       run: echo "${{ env.CEXA_ENV_VALUE }}" | docker secret create CEXA_ENV_SECRETS -
