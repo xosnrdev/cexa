@@ -7,6 +7,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.sha }}
+
 permissions:
   actions: write
   contents: write
@@ -23,7 +26,6 @@ env:
   TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
   DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
-  CEXA_ENV_VALUE: ${{ secrets.CEXA_ENV_VALUE }}
   PR_BRANCH: release-ci-${{ github.sha }}
 
 jobs:
@@ -67,8 +69,8 @@ jobs:
           git-user-email: "github-actions[bot]@users.noreply.github.com"
           git-branch: ${{ env.PR_BRANCH }}
           skip-git-pull: true
-          output-file: false
-          version-file: package.json
+          output-file: CHANGELOG.md
+          version-file: package.json package-lock.json
           create-summary: true
 
       - name: Create changelog pr
@@ -139,8 +141,8 @@ jobs:
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3
         with:
           registry: docker.io
-          username: ${{ env.DOCKER_USERNAME }}
-          password: ${{ env.DOCKER_PASSWORD }}
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKERHUB_PASSWORD }}
 
       - name: Login ghcr.io
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3
@@ -154,8 +156,8 @@ jobs:
         id: meta
         with:
           images: |
-            docker.io/${{ env.DOCKER_USERNAME }}/${{ github.repository_name }}
-            ghcr.io/${{ github.repository_owner }}/${{ github.repository_name }}
+            docker.io/${{ env.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}
+            ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
           tags: |
             latest
             ${{ needs.changelog.outputs.version }}
@@ -165,7 +167,11 @@ jobs:
         uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56 # v5
         with:
           context: .
-          secret_envs: ${{ env.CEXA_ENV_VALUE }}
+          secrets: |
+            RATE_LIMIT_WINDOW_MS=${{ env.RATE_LIMIT_WINDOW_MS }}
+            RATE_LIMIT_MAX=${{ env.RATE_LIMIT_MAX }}
+            PORT=${{ env.PORT}}
+            NODE_ENV=${{ env.NODE_ENV }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

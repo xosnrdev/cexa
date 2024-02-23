@@ -7,7 +7,7 @@ RUN npm ci
 FROM base AS buildStage
 
 COPY . .
-RUN --mount=type=secret,id=CEXA_ENV_SECRETS,target=./.env npm run build
+RUN npm run build
 
 FROM node:21-alpine AS productionStage
 

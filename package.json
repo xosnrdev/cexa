@@ -4,8 +4,8 @@
   "description": "Code Execution API",
   "main": "dist/src/server.js",
   "scripts": {
-    "build": "NODE_ENV=PRODUCTION npm run lint && tsc",
-    "start": "NODE_ENV=PRODUCTION node dist/src/server.js",
+    "build": "npm run lint && tsc",
+    "start": "node dist/src/server.js",
     "dev": "nodemon src/server.ts",
     "test": "jest --coverage --detectOpenHandles",
     "lint": "eslint --fix .",
