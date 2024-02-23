@@ -1,8 +1,8 @@
 # <p align="center">CEXA: Code Execution API</p>
 
-[![CI](https://github.com/xosnrdev/cexa/actions/workflows/ci.yml/badge.svg?event=pull_request)](https://github.com/xosnrdev/cexa/actions/workflows/ci.yml)
+[![CI](https://github.com/xosnrdev/cexa/actions/workflows/ci.yml/badge.svg)](https://github.com/xosnrdev/cexa/actions/workflows/ci.yml)
 
-CEXA is a powerful API designed to execute arbitrary code snippets in various programming languages within isolated docker environments. It prioritizes security, scalability, and user-friendliness.
+CEXA is a code execution api engine designed to execute arbitrary code in various programming languages leveraging the power of isolated docker containers. It is a versatile tool for coding platforms, educational platforms, and more.
 
 ## Table of Contents
 
@@ -15,30 +15,26 @@ CEXA is a powerful API designed to execute arbitrary code snippets in various pr
 
 ## Key Features
 
-- **Multi-Language Support:** Execute code in multiple programming languages, making it a versatile tool for coding platforms, educational platforms, and more.
-- **docker-Based Execution:** Ensures code execution within isolated docker containers for security and consistent environments.
-- **Robust Error Handling:** Capable of handling various edge cases, including unsupported languages, missing Docker images, and code execution errors.
+- **Multi-Language Support:** Supports a wide range of programming languages, including Python, JavaScript, Java, C, C++, and more.
+- **docker-Based Execution:** Utilizes docker containers to execute code in a secure and isolated environment.
+- **Robust Error Handling:** Handles various types of errors, including syntax errors, runtime errors, and infinite loops.
 
 ## Edge Cases
 
-CEXA has been rigorously tested against a variety of edge cases, including but not limited to:
+CEXA handles the following edge cases:
 
-- Unsupported languages
-- Execution timeouts
-- Empty or invalid code submissions
-- Missing language or code in requests
-- Syntax errors and unauthorized actions
-- Runtime errors, infinite loops, and external network access attempts
-- Attempts to write to disk
+- **Infinite Loops:** CEXA uses a timeout mechanism to prevent infinite loops and other long-running code.
+- **Syntax Errors:** CEXA detects and reports syntax errors in the code.
+- **Runtime Errors:** CEXA detects and reports runtime errors in the code.
 
 ## Getting Started
 
 ### Prerequisites
 
-Ensure you have the following installed:
+To run the project, you need to have the following installed on your system:
 
-- Node.js (Version 18.x or later)
-- docker
+- [Node.js](https://nodejs.org/en/download/)
+- [Docker](https://www.docker.com/products/docker-desktop)
 
 ### Installation
 
@@ -57,7 +53,14 @@ Follow these steps to set up the project locally:
    cd cexa
    ```
 
-3. Add environment variables to your .env file
+3. Create a `.env` file in the root directory and add the following environment variables:
+
+   ```env
+   RATE_LIMIT_WINDOW_MS=
+   RATE_LIMIT_MAX=
+   PORT=8080
+   NODE_ENV=
+   ```
 
 4. Install the dependencies:
 
@@ -68,17 +71,25 @@ Follow these steps to set up the project locally:
 5. Start the server:
 
    ```bash
-   npm start
+   npm run dev
    ```
 
 ## API Documentation
 
-For a detailed overview of the API endpoints and usage, visit our [API documentation](https://documenter.getpostman.com/view/32696710/2s9YythLiJ).
+The API documentation is available at [CEXA documentation](https://documenter.getpostman.com/view/32696710/2s9YythLiJ).
 
 ## Contributing
 
-We welcome contributions! Please see our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) file for guidelines on how to contribute and the process for submitting pull requests.
+Contributions are welcome! To contribute to the project, follow these steps:
+
+1. Fork the repository.
+2. Create a new branch.
+3. Make your changes and commit them.
+4. Push your changes to your fork.
+5. Open a pull request.
+
+For more details, see the [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md) file.
 
 ## License
 
-CEXA is licensed under the MIT License. For more details, see the [LICENSE](LICENSE) file.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
