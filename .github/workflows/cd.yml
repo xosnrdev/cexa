@@ -4,17 +4,13 @@ on:
   push:
     branches:
       - master
-  workflow_run:
-    workflows: ["CI"]
-    types:
-      - completed
   workflow_dispatch:
 
 permissions:
   actions: read
   contents: read
   packages: read
-  
+
 env:
   TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
   DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -24,14 +20,60 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # if workflow run CI is of type completed and theres no conflicts or workflow abnormallies
+    if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_commit.id == github.sha
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Release
-        uses: ./.github/actions/release
-        env:
-          TOKEN_GITHUB: ${{ env.TOKEN_GITHUB }}
-          DOCKERHUB_USERNAME: ${{ env.DOCKERHUB_USERNAME }}
-          DOCKERHUB_PASSWORD: ${{ env.DOCKERHUB_PASSWORD }}
-          CEXA_ENV_VALUE: ${{ env.CEXA_ENV_VALUE }}
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Install dependencies
+        shell: bash -euxo pipefail {0}
+        run: npm ci
+
+      - name: Bump version and generate changelog
+        uses: mikepenz/release-changelog-builder-action@v4.1.1
+        id: changelog
+        with:
+          token: ${{ env.TOKEN_GITHUB }}
+
+      - name: Commit changes
+        shell: bash -euxo pipefail {0}
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -am "chore(release): ${VERSION}"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ env.TOKEN_GITHUB }}
+          branch: ${{ github.ref }}
+
+      - name: Build Docker image
+        shell: bash -euxo pipefail {0}
+        run: docker build -t ${{env.DOCKERHUB_USERNAME}}/cexa:${{ steps.package.outputs.version }} .
+
+      - name: Log in to DockerHub
+        shell: bash -euxo pipefail {0}
+        run: echo "${{ env.DOCKERHUB_PASSWORD }}" | docker login -u ${{ env.DOCKERHUB_USERNAME }} --password-stdin
+
+      - name: Push Docker image
+        shell: bash -euxo pipefail {0}
+        run: docker push ${{env.DOCKERHUB_USERNAME}}/cexa:${{ steps.package.outputs.version }}
+
+      - name: Create Docker secret
+        shell: bash -euxo pipefail {0}
+        run: echo "${{ env.CEXA_ENV_VALUE }}" | docker secret create CEXA_ENV_SECRETS -

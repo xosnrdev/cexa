@@ -19,7 +19,6 @@ env:
   RATE_LIMIT_MAX: ${{ secrets.RATE_LIMIT_MAX }}
   PORT: ${{ secrets.PORT }}
   NODE_ENV: ${{ secrets.NODE_ENV }}
-
   DIGITALOCEAN_API_TOKEN: ${{ secrets.DIGITALOCEAN_API_TOKEN}}
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
