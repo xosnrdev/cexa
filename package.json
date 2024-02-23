@@ -4,11 +4,12 @@
   "description": "A code execution api engine that executes and runs arbitrary code isolatedly.",
   "main": "dist/src/server.js",
   "scripts": {
-    "build": "NODE_ENV=PRODUCTION npm run format && tsc",
+    "build": "NODE_ENV=PRODUCTION npm run lint && tsc",
     "start": "NODE_ENV=PRODUCTION node dist/src/server.js",
     "dev": "nodemon src/server.ts",
     "test": "jest --coverage --detectOpenHandles",
-    "format": "eslint --fix ."
+    "lint": "eslint --fix .",
+    "test:ci": "npm run lint && npm run test"
   },
   "repository": {
     "type": "git",
