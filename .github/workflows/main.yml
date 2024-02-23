@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+permissions:
+  actions: read
+  contents: read
+  packages: read
+
+env:
+  RATE_LIMIT_WINDOW_MS: ${{ secrets.RATE_LIMIT_WINDOW_MS }}
+  RATE_LIMIT_MAX: ${{ secrets.RATE_LIMIT_MAX }}
+  PORT: ${{ secrets.PORT }}
+  NODE_ENV: ${{ secrets.NODE_ENV }}
+  TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+  CEXA_ENV_VALUE: ${{ secrets.CEXA_ENV_VALUE }}
+  DIGITALOCEAN_API_TOKEN: ${{ secrets.DIGITALOCEAN_API_TOKEN}}
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'feature/')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run tests
+        uses: ./.github/actions/test
+        with:
+          DIGITALOCEAN_API_TOKEN: ${{ env.DIGITALOCEAN_API_TOKEN }}
+          CODECOV_TOKEN: ${{ env.CODECOV_TOKEN }}
+
+  release:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Release
+        uses: ./.github/actions/release
+        with:
+          TOKEN_GITHUB: ${{ env.TOKEN_GITHUB }}
+          DOCKERHUB_USERNAME: ${{ env.DOCKERHUB_USERNAME }}
+          DOCKERHUB_PASSWORD: ${{ env.DOCKERHUB_PASSWORD }}
+          CEXA_ENV_VALUE: ${{ env.CEXA_ENV_VALUE }}
