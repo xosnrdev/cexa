@@ -1,6 +1,6 @@
 {
   "name": "cexa",
-  "version": "0.0.0.0.0",
+  "version": "0.0.0",
   "description": "A code execution api engine that executes and runs arbitrary code isolatedly.",
   "main": "dist/src/server.js",
   "scripts": {
