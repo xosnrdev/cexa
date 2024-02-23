@@ -1,6 +1,6 @@
-# CEXA: Code Execution API
+# <p align="center">CEXA: Code Execution API</p>
 
-[![CI](https://github.com/xosnrdev/cexa/actions/workflows/ci.yml/badge.svg?event=pull_request)](https://github.com/xosnrdev/cexa/actions/workflows/ci.yml)
+[![CI](https://github.com/xosnrdev/cexa/actions/workflows/main.yml/badge.svg?event=pull_request)](https://github.com/xosnrdev/cexa/actions/workflows/main.yml)
 
 CEXA is a powerful API designed to execute arbitrary code snippets in various programming languages within isolated docker environments. It prioritizes security, scalability, and user-friendliness.
 
@@ -39,7 +39,6 @@ Ensure you have the following installed:
 
 - Node.js (Version 18.x or later)
 - docker
-- Nerdctl
 
 ### Installation
 
@@ -78,7 +77,7 @@ For a detailed overview of the API endpoints and usage, visit our [API documenta
 
 ## Contributing
 
-We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines on how to contribute and the process for submitting pull requests.
+We welcome contributions! Please see our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) file for guidelines on how to contribute and the process for submitting pull requests.
 
 ## License
 
