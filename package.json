@@ -1,7 +1,7 @@
 {
   "name": "cexa",
   "version": "0.0.0",
-  "description": "A code execution api engine that executes and runs arbitrary code isolatedly.",
+  "description": "Code Execution API",
   "main": "dist/src/server.js",
   "scripts": {
     "build": "NODE_ENV=PRODUCTION npm run lint && tsc",
@@ -11,29 +11,11 @@
     "lint": "eslint --fix .",
     "test:ci": "npm run lint && npm run test"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/xosnrdev/cexa.git"
-  },
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=10.0.0",
     "yarn": "please-use-npm"
   },
-  "keywords": [
-    "cexa",
-    "code",
-    "execution",
-    "api",
-    "engine",
-    "docker",
-    "isolation",
-    "kubernetes",
-    "container",
-    "security"
-  ],
-  "author": "Success Kingsley",
-  "license": "MIT",
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.11",
