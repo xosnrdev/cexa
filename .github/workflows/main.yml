@@ -26,7 +26,7 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'feature/')
+    if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'Feature/')
 
     steps:
       - name: Checkout repository
