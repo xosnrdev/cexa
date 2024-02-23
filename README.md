@@ -1,6 +1,7 @@
 # <p align="center">CEXA: Code Execution API</p>
 
 [![CI](https://github.com/xosnrdev/cexa/actions/workflows/ci.yml/badge.svg)](https://github.com/xosnrdev/cexa/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/xosnrdev/cexa/graph/badge.svg?token=9MWoTJwvs5)](https://codecov.io/gh/xosnrdev/cexa)
 
 CEXA is a code execution api engine designed to execute arbitrary code in various programming languages leveraging the power of isolated docker containers. It is a versatile tool for coding platforms, educational platforms, and more.
 
