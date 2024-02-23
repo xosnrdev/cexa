@@ -1,9 +1,6 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - master
   pull_request:
     branches:
       - master
@@ -19,17 +16,13 @@ env:
   RATE_LIMIT_MAX: ${{ secrets.RATE_LIMIT_MAX }}
   PORT: ${{ secrets.PORT }}
   NODE_ENV: ${{ secrets.NODE_ENV }}
-  TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
-  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-  DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
-  CEXA_ENV_VALUE: ${{ secrets.CEXA_ENV_VALUE }}
+
   DIGITALOCEAN_API_TOKEN: ${{ secrets.DIGITALOCEAN_API_TOKEN}}
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
 jobs:
   unit_test:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'feature/') && github.base_ref == 'master'
 
     steps:
       - name: Checkout repository
@@ -44,7 +37,8 @@ jobs:
   release:
     needs: unit_test
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    # if pull request is merged to master with no conflicts or abnormalies
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && github.event.pull_request.merged_at != null
 
     steps:
       - name: Checkout repository
