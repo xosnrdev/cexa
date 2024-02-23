@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
   workflow_dispatch:
 
 permissions:
@@ -26,7 +29,7 @@ env:
 jobs:
   unit_test:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'feature/')
+    if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'feature/') && github.base_ref == 'master'
 
     steps:
       - name: Checkout repository
