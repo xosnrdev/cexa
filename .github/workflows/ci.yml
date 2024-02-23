@@ -42,8 +42,7 @@ jobs:
 
   changelog:
     name: Generate changelog
-    needs:
-      - test
+    needs: test
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
 
