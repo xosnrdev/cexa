@@ -1,6 +1,9 @@
 name: CI
 
 on:
+  push:
+    branches:
+      - master
   pull_request:
     branches:
       - master
@@ -33,21 +36,3 @@ jobs:
         env:
           DIGITALOCEAN_API_TOKEN: ${{ env.DIGITALOCEAN_API_TOKEN }}
           CODECOV_TOKEN: ${{ env.CODECOV_TOKEN }}
-
-  release:
-    needs: unit_test
-    runs-on: ubuntu-latest
-    # if pull request is merged to master with no conflicts or abnormalies
-    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && github.event.pull_request.merged_at != null
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Release
-        uses: ./.github/actions/release
-        env:
-          TOKEN_GITHUB: ${{ env.TOKEN_GITHUB }}
-          DOCKERHUB_USERNAME: ${{ env.DOCKERHUB_USERNAME }}
-          DOCKERHUB_PASSWORD: ${{ env.DOCKERHUB_PASSWORD }}
-          CEXA_ENV_VALUE: ${{ env.CEXA_ENV_VALUE }}
