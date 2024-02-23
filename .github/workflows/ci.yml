@@ -8,7 +8,6 @@ on:
   workflow_dispatch:
 
 permissions:
-  actions: read
   contents: write
   packages: write
   pull-requests: write
@@ -71,21 +70,21 @@ jobs:
           version-file: package.json
           create-summary: true
 
-      - name: Create Changelog PR
+      - name: Create changelog pr
         if: steps.changelog.outputs.skipped == 'false'
         run: |
           gh pr create --base master --head ${{ env.PR_BRANCH }} --title 'chore(release): ${{ steps.changelog.outputs.tag }} [skip-ci]' --body '${{ steps.changelog.outputs.clean_changelog }}'
         env:
           GH_TOKEN: ${{ github.token }}
 
-      - name: Approve Changelog PR
+      - name: Approve changelog pr
         if: steps.changelog.outputs.skipped == 'false'
         run: |
           gh pr review --approve ${{ env.PR_BRANCH }}
         env:
           GH_TOKEN: ${{ env.TOKEN_GITHUB}}
 
-      - name: Merge Changelog PR
+      - name: Merge changelog pr
         if: steps.changelog.outputs.skipped == 'false'
         run: |
           gh pr merge --squash --auto --delete-branch ${{ env.PR_BRANCH }}
@@ -99,7 +98,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Setup node
@@ -135,13 +134,37 @@ jobs:
             ${{ needs.changelog.outputs.clean_changelog }}
             </details>
 
-      - name: Sign in to dockerHub
-        run: echo "${{ env.DOCKERHUB_PASSWORD }}" | docker login -u ${{ env.DOCKERHUB_USERNAME }} --password-stdin
+      - name: Login docker.io
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3
+        with:
+          registry: docker.io
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
 
-      - name: Build Docker image
-        run: |
-          echo "${{ env.CEXA_ENV_VALUE }}" | docker secret create CEXA_ENV_SECRETS -
-          docker build -t ${{env.DOCKERHUB_USERNAME}}/cexa:${{ needs.changelog.outputs.version }} .
+      - name: Login ghcr.io
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ env.TOKEN_GITHUB }}
 
-      - name: Push Docker image
-        run: docker push ${{env.DOCKERHUB_USERNAME}}/cexa:${{ needs.changelog.outputs.version }}
+      - name: Setup docker metadata
+        uses: docker/metadata-action@dbef88086f6cef02e264edb7dbf63250c17cef6c # v5
+        id: meta
+        with:
+          images: |
+            docker.io/${{ env.DOCKER_USERNAME }}/${{ github.repository_name }}
+            ghcr.io/${{ github.repository_owner }}/${{ github.repository_name }}
+          tags: |
+            latest
+            ${{ needs.changelog.outputs.version }}
+            ${{ github.sha }}
+
+      - name: Build and push docker image
+        uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56 # v5
+        with:
+          context: .
+          secret_envs: ${{ env.CEXA_ENV_VALUE }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
