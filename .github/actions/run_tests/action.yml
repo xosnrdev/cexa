@@ -1,15 +1,15 @@
-name: "Run tests"
-description: "Run the test suite"
+name: "run tests"
+description: "run the test suite"
 
 runs:
   using: "composite"
   steps:
-    - name: Install node
+    - name: install node
       uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
       with:
         node-version: "18"
 
-    - name: Cache dependencies
+    - name: cache dependencies
       uses: actions/cache@a2ed59d39b352305bdd2f628719a53b2cc4f9613
       with:
         path: |
@@ -19,25 +19,25 @@ runs:
         restore-keys: |
           ${{ runner.os }}-npm-
 
-    - name: Install dependencies
+    - name: install dependencies
       shell: bash -euxo pipefail {0}
       run: npm ci
 
-    - name: Set up doctl
+    - name: set up doctl
       uses: digitalocean/action-doctl@135ac0aa0eed4437d547c6f12c364d3006b42824
       with:
         version: "latest"
         token: ${{env.DIGITALOCEAN_API_TOKEN}}
 
-    - name: Registry login
+    - name: registry login
       shell: bash -euxo pipefail {0}
       run: doctl registry login --read-only --expiry-seconds 30
 
-    - name: Run development tests
+    - name: run development tests
       shell: bash -euxo pipefail {0}
       run: npm run test:ci
 
-    - name: Send coverage results to Codecov
+    - name: send coverage to codecov
       uses: codecov/codecov-action@0cfda1dd0a4ad9efc75517f399d859cd1ea4ced1
       with:
         token: ${{ env.CODECOV_TOKEN }}
