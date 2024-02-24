@@ -17,7 +17,7 @@ WORKDIR /home/cexa/app
 RUN chown -R cexa:cexa /home/cexa/app
 USER cexa
 
-COPY --from=buildStage /app/dist /app/package.json /app/.env ./
+COPY --from=buildStage /app/dist /app/package.json ./
 
 RUN npm install --omit=dev --ignore-scripts
 
