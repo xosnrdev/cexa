@@ -155,9 +155,10 @@ jobs:
         id: meta
         with:
           images: |
-            docker.io/${{ env.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}
-            ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
+            ${{ env.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}
+            ${{ github.repository_owner }}/${{ github.event.repository.name }}
           tags: |
+            latest
             ${{ needs.changelog.outputs.version }}
             ${{ github.sha }}
 
