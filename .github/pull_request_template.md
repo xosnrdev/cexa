@@ -1,30 +1,24 @@
-# Related Issue
+## Pull Request
 
-Closes: # <!-- issue number that will be closed through this PR -->
+### Description
 
-## Describe the changes you've made
+Please provide a brief description of the changes made in this pull request.
 
-<!-- Give a clear description of what modifications you have made -->
+### Related Issue
 
-## How has this been tested?
+If this pull request is related to any issue, please mention it here.
 
-<!-- Describe how have you verified the changes made -->
+### Checklist
 
-## Checklist
-<!--
-Example how to mark a checkbox:-
-- [x] I have performed a self-review of my own code.
--->
-- [ ] I have performed a self-review of my own code.
-- [ ] I have commented on my code, particularly wherever it was hard to understand.
-- [ ] I have made corresponding changes to the documentation.
-- [ ] I have followed the code style of the project
-- [ ] I have tested my code, and it works without errors
+- [ ] I have tested the changes locally.
+- [ ] I have followed the coding style guidelines.
+- [ ] I have updated the documentation if necessary.
+- [ ] I have added appropriate unit tests.
 
-## Additional Information
+### Screenshots
 
-<!-- Screenshots, notes for reviewers, anything? -->
+If applicable, add screenshots to help explain the changes made.
 
-## Code of Conduct
+### Additional Notes
 
-- [ ] I agree to follow this project's [Code of Conduct](https://github.com/xosnrdev/cexa/blob/master/CODE_OF_CONDUCT.md)
+Add any additional notes or context about the pull request here.

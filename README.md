@@ -89,7 +89,7 @@ Contributions are welcome! To contribute to the project, follow these steps:
 4. Push your changes to your fork.
 5. Open a pull request.
 
-For more details, see the [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md) file.
+For more details, see the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
 ## License
 
