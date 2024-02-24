@@ -52,10 +52,12 @@ jobs:
       version: ${{ steps.changelog.outputs.version }}
 
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - name: checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        with:
+          fetch-depth: 0
       - name: create branch
-        run: |
-          git checkout -b ${{ env.PR_BRANCH }}
+        run: git checkout -b ${{ env.PR_BRANCH }}
 
       - name: create changelog
         uses: TriPSs/conventional-changelog-action@dd734f74fce61a6e02f821ee1b5930bc79a23534 # v5
@@ -79,15 +81,13 @@ jobs:
 
       - name: approve changelog pr
         if: steps.changelog.outputs.skipped == 'false'
-        run: |
-          gh pr review --approve ${{ env.PR_BRANCH }}
+        run: gh pr review --approve ${{ env.PR_BRANCH }}
         env:
           GH_TOKEN: ${{ env.TOKEN_GITHUB}}
 
       - name: merge changelog pr
         if: steps.changelog.outputs.skipped == 'false'
-        run: |
-          gh pr merge --squash --auto --delete-branch ${{ env.PR_BRANCH }}
+        run: gh pr merge --squash --auto --delete-branch ${{ env.PR_BRANCH }}
         env:
           GH_TOKEN: ${{ env.TOKEN_GITHUB }}
 
